@@ -1,14 +1,13 @@
-// Update this page (the content is just a fallback if you fail to update the page)
 
-const Index = () => {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-gray-600">Start building your amazing project here!</p>
-      </div>
-    </div>
-  );
-};
+import { useEffect } from 'react';
+import { Navigate } from 'react-router-dom';
 
-export default Index;
+// This file redirects to Home.tsx so we have proper route organization
+export default function Index() {
+  useEffect(() => {
+    // Log when the index page is loaded
+    console.log('Index page loaded, redirecting to home');
+  }, []);
+
+  return <Navigate to="/" replace />;
+}

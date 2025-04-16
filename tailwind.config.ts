@@ -52,6 +52,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+        hive: {
+          blue: '#3B82F6',
+          indigo: '#6366F1',
+          amber: '#F59E0B',
+          green: '#10B981',
+          red: '#EF4444',
+          gray: '#F9FAFB',
+          dark: '#1F2937',
+        },
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
