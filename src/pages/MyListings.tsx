@@ -18,8 +18,18 @@ import {
 import { recentListings as mockListings } from "@/data/mockListings";
 import { ListingProps } from "@/components/listings/ListingCard";
 
+// Add missing properties to the mockListings data
+const enhancedMockListings = mockListings.map((listing, index) => ({
+  ...listing,
+  status: index % 3 === 0 ? "active" : index % 3 === 1 ? "paused" : "sold",
+  condition: index % 2 === 0 ? "New" : "Used",
+  views: Math.floor(Math.random() * 100),
+  favorites: Math.floor(Math.random() * 20),
+  imageUrl: listing.image, // Map image to imageUrl for consistency
+}));
+
 export default function MyListings() {
-  const [listings, setListings] = useState<ListingProps[]>(mockListings);
+  const [listings, setListings] = useState<ListingProps[]>(enhancedMockListings);
   const [activeTab, setActiveTab] = useState("active");
 
   const handleTabChange = (value: string) => {
@@ -179,7 +189,7 @@ function ListingItem({ listing, onDelete, onTogglePause, showPause = true }: Lis
         <div className="flex flex-col sm:flex-row">
           <div className="w-full sm:w-1/4 h-48 sm:h-auto">
             <img 
-              src={listing.imageUrl} 
+              src={listing.imageUrl || listing.image} 
               alt={listing.title} 
               className="w-full h-full object-cover"
             />
@@ -188,13 +198,15 @@ function ListingItem({ listing, onDelete, onTogglePause, showPause = true }: Lis
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-2">
               <h3 className="text-lg font-semibold">{listing.title}</h3>
               <div className="mt-2 sm:mt-0">
-                {getStatusBadge(listing.status)}
+                {getStatusBadge(listing.status || 'unknown')}
               </div>
             </div>
             
             <div className="flex flex-wrap gap-2 mb-2">
               <Badge variant="outline">{listing.category}</Badge>
-              <Badge variant="outline">{listing.condition}</Badge>
+              {listing.condition && (
+                <Badge variant="outline">{listing.condition}</Badge>
+              )}
             </div>
             
             <p className="text-2xl font-bold text-primary mb-2">
@@ -206,7 +218,7 @@ function ListingItem({ listing, onDelete, onTogglePause, showPause = true }: Lis
                 Listed on {new Date(listing.createdAt).toLocaleDateString()}
               </div>
               <div>
-                {listing.views} views • {listing.favorites} favorites
+                {listing.views || 0} views • {listing.favorites || 0} favorites
               </div>
             </div>
           </div>
@@ -221,7 +233,7 @@ function ListingItem({ listing, onDelete, onTogglePause, showPause = true }: Lis
         </Button>
         
         <div className="flex space-x-2">
-          {showPause && (
+          {showPause && listing.status && (
             <Button 
               variant="ghost" 
               size="sm"

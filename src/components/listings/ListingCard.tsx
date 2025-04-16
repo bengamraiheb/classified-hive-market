@@ -18,6 +18,13 @@ export interface ListingProps {
   createdAt: Date;
   featured?: boolean;
   verified?: boolean;
+  status?: string;
+  imageUrl?: string; // Some components might use imageUrl instead of image
+  condition?: string;
+  views?: number;
+  favorites?: number;
+  isFavorite?: boolean;
+  onFavoriteToggle?: () => void;
 }
 
 export function ListingCard({
@@ -30,6 +37,8 @@ export function ListingCard({
   createdAt,
   featured = false,
   verified = false,
+  isFavorite = false,
+  onFavoriteToggle,
 }: ListingProps) {
   return (
     <Card className={cn(
@@ -57,11 +66,11 @@ export function ListingCard({
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
-            // Toggle favorite logic here
+            if (onFavoriteToggle) onFavoriteToggle();
           }}
         >
-          <Heart className="h-4 w-4 text-muted-foreground" />
-          <span className="sr-only">Add to favorites</span>
+          <Heart className={`h-4 w-4 ${isFavorite ? "fill-red-500 text-red-500" : "text-muted-foreground"}`} />
+          <span className="sr-only">{isFavorite ? "Remove from favorites" : "Add to favorites"}</span>
         </Button>
       </Link>
 
