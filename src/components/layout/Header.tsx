@@ -18,11 +18,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { LanguageSelector } from "./LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export function Header() {
   const isMobile = useIsMobile();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { t } = useLanguage();
 
   // Demo toggle auth function - to be replaced with real auth
   const toggleAuth = () => setIsAuthenticated(!isAuthenticated);
@@ -33,7 +36,7 @@ export function Header() {
         <div className="mr-4 flex">
           <Link to="/" className="flex items-center space-x-2">
             <span className="hidden font-bold text-xl sm:inline-block">
-              HIVE<span className="text-hive-blue">MARKET</span>
+              {t('app.name')}
             </span>
             <span className="font-bold text-xl sm:hidden">HM</span>
           </Link>
@@ -44,7 +47,7 @@ export function Header() {
             {isSearchOpen ? (
               <div className="flex-1 flex items-center">
                 <Input 
-                  placeholder="Search listings..." 
+                  placeholder={`${t('browse.search')}...`}
                   className="flex-1" 
                   autoFocus
                 />
@@ -67,7 +70,7 @@ export function Header() {
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Search listings..."
+                placeholder={`${t('browse.search')}...`}
                 className="w-full pl-8 bg-background"
               />
             </div>
@@ -76,16 +79,18 @@ export function Header() {
         
         <div className="flex flex-1 items-center justify-end space-x-2">
           <nav className="flex items-center space-x-2">
+            <LanguageSelector />
+            
             {!isMobile && (
               <Button asChild variant="ghost">
-                <Link to="/browse">Browse</Link>
+                <Link to="/browse">{t('nav.browse')}</Link>
               </Button>
             )}
             
             <Button asChild variant="default" className="hidden sm:flex">
               <Link to="/new-listing">
                 <PlusCircle className="mr-2 h-4 w-4" />
-                Post Ad
+                {t('nav.post')}
               </Link>
             </Button>
             
@@ -103,30 +108,30 @@ export function Header() {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuLabel>{t('nav.profile')}</DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link to="/profile">Profile</Link>
+                      <Link to="/profile">{t('nav.profile')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/my-listings">My Listings</Link>
+                      <Link to="/my-listings">{t('nav.listings')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/favorites">Favorites</Link>
+                      <Link to="/favorites">{t('nav.favorites')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link to="/messages">Messages</Link>
+                      <Link to="/messages">{t('nav.messages')}</Link>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={toggleAuth}>
-                      Logout
+                      {t('nav.signout')}
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </>
             ) : (
               <Button onClick={toggleAuth} variant="ghost">
-                Sign In
+                {t('nav.signin')}
               </Button>
             )}
             
@@ -140,19 +145,19 @@ export function Header() {
                 <SheetContent side="right">
                   <nav className="flex flex-col gap-4 mt-8">
                     <Link to="/" className="text-lg font-medium">Home</Link>
-                    <Link to="/browse" className="text-lg font-medium">Browse</Link>
-                    <Link to="/categories" className="text-lg font-medium">Categories</Link>
-                    <Link to="/new-listing" className="text-lg font-medium">Post an Ad</Link>
+                    <Link to="/browse" className="text-lg font-medium">{t('nav.browse')}</Link>
+                    <Link to="/categories" className="text-lg font-medium">{t('browse.categories')}</Link>
+                    <Link to="/new-listing" className="text-lg font-medium">{t('nav.post')}</Link>
                     {isAuthenticated ? (
                       <>
-                        <Link to="/profile" className="text-lg font-medium">Profile</Link>
-                        <Link to="/my-listings" className="text-lg font-medium">My Listings</Link>
-                        <Link to="/favorites" className="text-lg font-medium">Favorites</Link>
-                        <Link to="/messages" className="text-lg font-medium">Messages</Link>
-                        <Button variant="outline" onClick={toggleAuth}>Logout</Button>
+                        <Link to="/profile" className="text-lg font-medium">{t('nav.profile')}</Link>
+                        <Link to="/my-listings" className="text-lg font-medium">{t('nav.listings')}</Link>
+                        <Link to="/favorites" className="text-lg font-medium">{t('nav.favorites')}</Link>
+                        <Link to="/messages" className="text-lg font-medium">{t('nav.messages')}</Link>
+                        <Button variant="outline" onClick={toggleAuth}>{t('nav.signout')}</Button>
                       </>
                     ) : (
-                      <Button onClick={toggleAuth}>Sign In</Button>
+                      <Button onClick={toggleAuth}>{t('nav.signin')}</Button>
                     )}
                   </nav>
                 </SheetContent>

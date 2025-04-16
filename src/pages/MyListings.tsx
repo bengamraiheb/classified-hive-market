@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -28,6 +27,22 @@ const enhancedMockListings = mockListings.map((listing, index) => ({
   imageUrl: listing.image, // Map image to imageUrl for consistency
 }));
 
+// Add the missing getStatusBadge function
+const getStatusBadge = (status: string) => {
+  switch(status) {
+    case "active":
+      return <Badge className="bg-green-500 hover:bg-green-600">Active</Badge>;
+    case "paused":
+      return <Badge variant="outline">Paused</Badge>;
+    case "sold":
+      return <Badge className="bg-blue-500 hover:bg-blue-600">Sold</Badge>;
+    case "expired":
+      return <Badge variant="destructive">Expired</Badge>;
+    default:
+      return <Badge variant="secondary">{status}</Badge>;
+  }
+};
+
 export default function MyListings() {
   const [listings, setListings] = useState<ListingProps[]>(enhancedMockListings);
   const [activeTab, setActiveTab] = useState("active");
@@ -50,21 +65,6 @@ export default function MyListings() {
     ));
     const status = listings.find(l => l.id === id)?.status === "active" ? "paused" : "active";
     toast.success(`Listing ${status === "active" ? "activated" : "paused"} successfully`);
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch(status) {
-      case "active":
-        return <Badge className="bg-green-500 hover:bg-green-600">Active</Badge>;
-      case "paused":
-        return <Badge variant="outline">Paused</Badge>;
-      case "sold":
-        return <Badge className="bg-blue-500 hover:bg-blue-600">Sold</Badge>;
-      case "expired":
-        return <Badge variant="destructive">Expired</Badge>;
-      default:
-        return <Badge variant="secondary">{status}</Badge>;
-    }
   };
 
   return (
